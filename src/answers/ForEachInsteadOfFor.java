@@ -23,11 +23,15 @@ public class ForEachInsteadOfFor {
         }
         System.out.println(builder.toString());
 
-        // Answer
-        
+        // Answer 1
         StringBuilder builder2 = new StringBuilder();
         strings.forEach(s -> builder2.append(s));
         System.out.println(builder2.toString());
+
+        // Answer 2
+        StringBuilder builder3 = new StringBuilder();
+        strings.forEach(builder3::append);
+        System.out.println(builder3.toString());
     }
     
     private void simpleLoop2() {
@@ -38,8 +42,7 @@ public class ForEachInsteadOfFor {
         }
         System.out.println(sum);
 
-        // Answer
-        
+        // Answer 1        
         numbers.forEach(n -> sum2 += n);
         System.out.println(sum2);
     }

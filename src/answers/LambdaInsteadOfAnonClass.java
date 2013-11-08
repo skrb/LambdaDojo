@@ -39,6 +39,7 @@ public class LambdaInsteadOfAnonClass {
         // Answer
         Runnable runnable2 = () -> { doSomething(); };
         Runnable runnable3 = () -> doSomething();
+        Runnable runnable4 = this::doSomething;
     }
     
     private void writeLambda3() {

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 public class StreamInsteadOfFor {
@@ -79,9 +80,14 @@ public class StreamInsteadOfFor {
                        .reduce(0, (x, y) -> x + y);
         System.out.println(ave/numbers.size());
                 
+        // Answer 5
         ave = IntStream.range(0, 11)
                        .sum();
         System.out.println(ave/numbers.size());
+        
+        // Answer 5
+        IntStream.range(0, 11)
+                 .average().ifPresent(System.out::println);
     }
     
     private void processStatistics() {
@@ -112,20 +118,37 @@ public class StreamInsteadOfFor {
                      .sum() / numbers.size();
         
         // Answer 2
-        numbers = IntStream.range(0, 101)
-                           .mapToObj(x -> new Double(random.nextDouble()))
-                           .collect(Collectors.toList());
+        double ave3 = numbers.stream()
+                             .mapToDouble(x -> x)
+                             .average()
+                             .getAsDouble();
+        
+        div = numbers.stream()
+                     .mapToDouble(x -> (x - ave3)*(x - ave3))
+                     .average()
+                     .getAsDouble();
         
         // 乱数の配列を Stream で作る場合
         double[] numbers2 = IntStream.range(0, 101)
                            .mapToDouble(x -> random.nextDouble())
                            .toArray();
 
-        // 乱数のリストを Stream で作る場合
+        // 乱数のリストを Stream で作る場合 1
         List<Double> numbers3 = IntStream.range(0, 101)
-                           .mapToDouble(x -> random.nextDouble())
-                           .mapToObj(x -> x)
+                           .mapToObj(x -> new Double(random.nextDouble()))
                            .collect(Collectors.toList());
+
+        // 乱数のリストを Stream で作る場合 2
+        List<Double> numbers4 = IntStream.range(0, 101)
+                           .mapToDouble(x -> random.nextDouble())
+                           .boxed()
+                           .collect(Collectors.toList());
+        
+        // 乱数のリストを Stream で作る場合 3
+        List<Double> numbers5 = DoubleStream.generate(random::nextDouble)
+                                            .limit(100)
+                                            .boxed()
+                                            .collect(Collectors.toList());
     }
     
     private void fileRead(String filename) {
@@ -172,6 +195,16 @@ public class StreamInsteadOfFor {
                                   .flatMap(l -> Arrays.stream(l.split(" ")))
                                   .mapToInt(w -> 1)
                                   .sum();
+            System.out.println(wordCount);
+        } catch (IOException ex) {
+            // 例外処理
+        }        
+
+        // Answer 4
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            int wordCount = (int)reader.lines()            
+                                       .flatMap(l -> Arrays.stream(l.split(" ")))
+                                       .count();
             System.out.println(wordCount);
         } catch (IOException ex) {
             // 例外処理
