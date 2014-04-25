@@ -4,10 +4,14 @@ package answers;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -18,7 +22,9 @@ public class StreamInsteadOfFor {
         simpleStream1();
         simpleStream2();
         processStatistics();
+        splitSentences();
         fileRead("src/StreamInsteadOfFor.java");
+        wordCount();
     }
     
     private void simpleStream1() {
@@ -91,64 +97,132 @@ public class StreamInsteadOfFor {
     }
     
     private void processStatistics() {
+        // 乱数のリストを作成
         Random random = new Random();
         List<Double> numbers = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             numbers.add(random.nextDouble());
         }
+
+        // Answer 1 乱数の配列を Stream で作成
+        double[] numbers2 = IntStream.range(0, 100)
+                           .mapToDouble(x -> random.nextDouble())
+                           .toArray();
+
+        // Answer 2 乱数のリストを Stream で作成
+        List<Double> numbers3 = IntStream.range(0, 100)
+                           .mapToObj(x -> new Double(random.nextDouble()))
+                           .collect(Collectors.toList());
+
+        // Answer 3 乱数のリストを Stream で作成 2
+        List<Double> numbers4 = IntStream.range(0, 100)
+                           .mapToDouble(x -> random.nextDouble())
+                           .boxed()
+                           .collect(Collectors.toList());
         
+        // Answer 4 乱数のリストを Stream で作る場合 3
+        List<Double> numbers5 = DoubleStream.generate(() -> random.nextDouble())
+                                            .limit(100)
+                                            .boxed()
+                                            .collect(Collectors.toList());
+
+        List<Double> numbers6 = DoubleStream.generate(random::nextDouble)
+                                            .limit(100)
+                                            .boxed()
+                                            .collect(Collectors.toList());
+
+        // 平均を算出
         double ave = 0.0;
         for (Double x: numbers) {
             ave += x;
         }
         ave /= numbers.size();
         
+        // Answer 1
+        ave = numbers.stream()
+                     .reduce(0.0, (previous, present) -> previous + present) / numbers.size();
+
+        // Answer 2 オートボクシングを減らす
+        ave = numbers.stream()
+                     .mapToDouble(x -> x)
+                     .reduce(0.0, (previous, present) -> previous + present) / numbers.size();
+
+        // Answer 3 プリミティブ型に対応したストリームにのみ定義されたメソッドを使用
+        ave = numbers.stream()
+                     .mapToDouble(x -> x)
+                     .sum() / numbers.size();
+        
+        // Answer 4
+        ave = numbers.stream()
+                     .mapToDouble(x -> x)
+                     .average()
+                     .getAsDouble();
+        
+        // Answer 5 collectを使用
+        ave = numbers.stream()
+                     .collect(Collectors.reducing(0.0, (previous, present) -> previous + present))
+                      / numbers.size();
+
+        // Answer 5 collectを使用
+        ave = numbers.stream()
+                     .collect(Collectors.averagingDouble(x -> x));
+
+        // 分散を算出
         double div = 0.0;
         for (Double x: numbers) {
             div += (x - ave) * (x -ave);                    
         }
         div /= numbers.size();
+
+        // 実質的finalのave2を定義しておく
+        double ave2 = ave;
         
         // Answer 1
-        double ave2 = numbers.stream()
-                             .mapToDouble(x -> x)
-                             .sum() / numbers.size();
+        div = numbers.stream()
+                     .map(x -> (x - ave2)*(x - ave2))
+                     .reduce(0.0, (prev, pres) -> prev + pres) / numbers.size();
+        
+        // Answer 2
+        div = numbers.stream()
+                     .mapToDouble(x -> (x - ave2)*(x - ave2))
+                     .reduce(0.0, (prev, pres) -> prev + pres) / numbers.size();
+        
+        // Answer 3
         div = numbers.stream()
                      .mapToDouble(x -> (x - ave2)*(x - ave2))
                      .sum() / numbers.size();
-        
-        // Answer 2
-        double ave3 = numbers.stream()
-                             .mapToDouble(x -> x)
-                             .average()
-                             .getAsDouble();
-        
+
+        // Answer 4
         div = numbers.stream()
-                     .mapToDouble(x -> (x - ave3)*(x - ave3))
+                     .mapToDouble(x -> (x - ave2)*(x - ave2))
                      .average()
                      .getAsDouble();
+    }
+    
+    private void splitSentences() {
+        List<String> sentences = Arrays.asList(
+                "Peter Piper picked",
+                "a peck of pickled peppers.",
+                "A peck of pickled peppers",
+                "Peter Piper picked. ",
+                "If Peter Piper picked",
+                "a peck of pickled peppers,",
+                "Where's the peck of pickled peppers",
+                "Peter Piper picked? "
+        );
         
-        // 乱数の配列を Stream で作る場合
-        double[] numbers2 = IntStream.range(0, 101)
-                           .mapToDouble(x -> random.nextDouble())
-                           .toArray();
-
-        // 乱数のリストを Stream で作る場合 1
-        List<Double> numbers3 = IntStream.range(0, 101)
-                           .mapToObj(x -> new Double(random.nextDouble()))
-                           .collect(Collectors.toList());
-
-        // 乱数のリストを Stream で作る場合 2
-        List<Double> numbers4 = IntStream.range(0, 101)
-                           .mapToDouble(x -> random.nextDouble())
-                           .boxed()
-                           .collect(Collectors.toList());
+        List<String> words = new ArrayList<>();
+        for (String sentence: sentences) {
+            String[] splitedSentence  = sentence.split(" ");
+            for (String word: splitedSentence) {
+                words.add(word);
+            }
+        }
         
-        // 乱数のリストを Stream で作る場合 3
-        List<Double> numbers5 = DoubleStream.generate(random::nextDouble)
-                                            .limit(100)
-                                            .boxed()
-                                            .collect(Collectors.toList());
+        // Answer
+        words = sentences.stream()
+                         .flatMap(sentence -> Arrays.stream(sentence.split(" ")))
+                         .collect(Collectors.toList());
     }
     
     private void fileRead(String filename) {
@@ -211,6 +285,64 @@ public class StreamInsteadOfFor {
         }        
     }
 
+    private void wordCount() {
+        List<String> sentences = Arrays.asList(
+                "Peter Piper picked",
+                "a peck of pickled peppers.",
+                "A peck of pickled peppers",
+                "Peter Piper picked. ",
+                "If Peter Piper picked",
+                "a peck of pickled peppers,",
+                "Where's the peck of pickled peppers",
+                "Peter Piper picked? "
+        );
+        
+        Map<String, Integer> result = new HashMap<>();
+        for (String sentence: sentences) {
+            String[] splitedSentence  = sentence.split(" ");
+            for (String word: splitedSentence) {
+                String lowerWord = word.toLowerCase();
+                int count = result.getOrDefault(lowerWord, 0);
+                result.put(lowerWord, count+1);
+            }
+        }
+        
+        // Answer 1
+        Map<String, Integer> result1 = new HashMap<>();
+        sentences.stream()
+                 .flatMap(sentence -> Arrays.stream(sentence.split(" ")))
+                 .map(word -> word.toLowerCase())
+                 .forEach(word -> {
+                     int count = result1.getOrDefault(word, 0);
+                     result.put(word, count);
+                 });
+        
+        // Answer 2
+        Map<String, Integer> result2 = new HashMap<>();
+        sentences.stream()
+                 .flatMap(sentence -> Arrays.stream(sentence.split(" ")))
+                 .map(word -> word.toLowerCase())
+                 .collect(Collectors.groupingBy(word -> word))
+                 .entrySet()
+                 .stream()
+                 .forEach(entry -> result2.put(entry.getKey(), entry.getValue().size()));
+
+        // Answer 3
+        Map<String, Integer> result4 = sentences.stream()
+                 .flatMap(sentence -> Arrays.stream(sentence.split(" ")))
+                 .map(word -> word.toLowerCase())
+                 .collect(Collectors.groupingBy(word -> word))
+                 .entrySet()
+                 .stream()
+                 .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().size()));
+
+        // Answer 4
+        Map<String, Integer> result3 = sentences.stream()
+                 .flatMap(sentence -> Arrays.stream(sentence.split(" ")))
+                 .map(word -> word.toLowerCase())
+                 .collect(Collectors.groupingBy(word -> word, Collectors.summingInt(word -> 1)));
+    }
+    
     public static void main(String[] args) { 
         new StreamInsteadOfFor(); 
     }

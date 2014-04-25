@@ -2,7 +2,6 @@ package questions;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class ForEachInsteadOfFor {
     public ForEachInsteadOfFor() {
@@ -11,8 +10,6 @@ public class ForEachInsteadOfFor {
         simpleLoop3();
     }
     
-    int sum2 = 0;
-
     private void simpleLoop1() {
         List<String> strings = Arrays.asList("a", "b", "c", "d", "e");
         
