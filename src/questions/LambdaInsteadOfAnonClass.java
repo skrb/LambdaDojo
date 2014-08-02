@@ -22,19 +22,19 @@ public class LambdaInsteadOfAnonClass {
     }
     
     private void writeLambda2() {
-        Runnable runnable1 = new Runnable() {
+        Callable<Date> callable1 = new Callable<Date>() {
             @Override
-            public void run() {
-                doSomething();
+            public Date call() throws Exception {
+                return new Date();
             }
         };
     }
     
     private void writeLambda3() {
-        Callable<Date> callable1 = new Callable<Date>() {
+        Runnable runnable1 = new Runnable() {
             @Override
-            public Date call() throws Exception {
-                return new Date();
+            public void run() {
+                doSomething();
             }
         };
     }

@@ -29,20 +29,6 @@ public class LambdaInsteadOfAnonClass {
     }
     
     private void writeLambda2() {
-        Runnable runnable1 = new Runnable() {
-            @Override
-            public void run() {
-                doSomething();
-            }
-        };
-        
-        // Answer
-        Runnable runnable2 = () -> { doSomething(); };
-        Runnable runnable3 = () -> doSomething();
-        Runnable runnable4 = this::doSomething;
-    }
-    
-    private void writeLambda3() {
         Callable<Date> callable1 = new Callable<Date>() {
             @Override
             public Date call() throws Exception {
@@ -54,6 +40,20 @@ public class LambdaInsteadOfAnonClass {
         Callable<Date> callable2 = () -> { return new Date(); };
         Callable<Date> callable3 = () -> new Date();
         Callable<Date> callable4 = Date::new;
+    }
+    
+    private void writeLambda3() {
+        Runnable runnable1 = new Runnable() {
+            @Override
+            public void run() {
+                doSomething();
+            }
+        };
+        
+        // Answer
+        Runnable runnable2 = () -> { doSomething(); };
+        Runnable runnable3 = () -> doSomething();
+        Runnable runnable4 = this::doSomething;
     }
     
     private void writeLambda4() {
