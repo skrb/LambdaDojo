@@ -4,14 +4,14 @@ package answers;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.AbstractMap;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -111,7 +111,7 @@ public class StreamInsteadOfFor {
 
         // Answer 2 乱数のリストを Stream で作成
         List<Double> numbers3 = IntStream.range(0, 100)
-                           .mapToObj(x -> new Double(random.nextDouble()))
+                           .mapToObj(x -> random.nextDouble())
                            .collect(Collectors.toList());
 
         // Answer 3 乱数のリストを Stream で作成 2
@@ -215,13 +215,14 @@ public class StreamInsteadOfFor {
         for (String sentence: sentences) {
             String[] splitedSentence  = sentence.split(" ");
             for (String word: splitedSentence) {
-                words.add(word);
+                words.add(word.toLowerCase());
             }
         }
         
         // Answer
         words = sentences.stream()
                          .flatMap(sentence -> Arrays.stream(sentence.split(" ")))
+                         .map(w -> w.toLowerCase())
                          .collect(Collectors.toList());
     }
     
@@ -283,6 +284,17 @@ public class StreamInsteadOfFor {
         } catch (IOException ex) {
             // 例外処理
         }        
+        
+        // Answer 4
+        // NIO.2 Path & Files を使用する
+        try {
+            Files.lines(Paths.get(filename))
+                 .flatMap(l -> Arrays.stream(l.split(" ")))
+                 .count();
+        } catch (IOException ex) {
+            // 例外処理
+        }        
+        
     }
 
     private void wordCount() {

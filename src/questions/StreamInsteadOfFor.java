@@ -80,7 +80,7 @@ public class StreamInsteadOfFor {
         for (String sentence: sentences) {
             String[] splitedSentence  = sentence.split(" ");
             for (String word: splitedSentence) {
-                words.add(word);
+                words.add(word.toLowerCase());
             }
         }
     }
