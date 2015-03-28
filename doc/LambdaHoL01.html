@@ -43,46 +43,124 @@
       <div class="col-md-9">
         <h2>1. はじめに</h2>
         <p>Java SE 8 で Project Lambda が導入されました。</p>
-        <p>Project Lambda の Lambda 式や Stream API を使用することで、関数型言語のアイデアを導入することができ、内部イテレータによって処理を行うことが可能になります。</p>
-        <p>Project Lambda の導入によって、今までの for 文や拡張 for 文といった外部イテレータから、内部イテレータで処理を記述することになり、Java のプログラミングスタイルが大きく変化します。</p>
-        <p>そこで、JJUG CCC のハンズオンでは Project Lambda の Lambda 式や Stream API を何度も書いていただきます。習うより慣れろで、繰り返し書くことにより内部イテレータの書き方も身についていくはずです。</p>
+        <p>Project Lambda が導入された目的は、マルチコア時代に求められる細粒度のパラレル処理を容易に記述することにあります。</p>
+        <p>関数型言語のアイデアを活かした Lambda 式や Stream API を使用することで、コレクションに対するイテレーションを今までのfor 文や拡張 for 文といった外部イテレータではなく、内部イテレータによって行うことができます。そして、内部イテレータで記述した処理をパラレル処理することも容易です。</p>
+        <p>そして、関数型言語のアイデアを導入したことにより、Java のプログラミングスタイルが大きく変化します。</p>
+        <p>慣れてしまえばとても効率よく処理が記述できますが、始めは考え方の違いに戸惑う方も多いかもしれません。</p>
+        <p>そこで、Lambda 道場では習うより慣れろで、Project Lambda の Lambda 式や Stream API を何度も書いていただきます。繰り返し書くことにより内部イテレータの書き方も身についていくはずです。</p>
         <p>本ハンズオンでは、プログラムの断片を提示していきます。それを Lambda 式や Stream で書き換えていってください。PC はなくても大丈夫。鉛筆で直接書き換えていってください。</p>
         <p>もし、余裕があるのであれば、家に帰ってから、ぜひ PC で実行し直してみてください。使用した問題、解答は GitHub の LambdaDojo プロジェクトに置いておきます。<a name="sec2" id="sec" ></a></p>
         <p>&nbsp;</p>
         <p>LambdaDojo <a href="https://github.com/skrb/LambdaDojo">https://github.com/skrb/LambdaDojo</a></p>
         <p>&nbsp;</p>
         <h2>2. Lambda 式</h2>
-        <p>Project Lambda で最も重要なのは内部イテレータを実現する Stream API です。しかし、Lambda 式が書けないと、Stream API も冗長な匿名クラスで書かざるをえません。Lambda 式で記述することによって、Stream API も簡潔に書けるようになります。</p>
-        <p>Lambda 式は関数型インタフェースを実装した匿名クラスの簡易的な記述法です。関数型インタフェースは実装すべきメソッドが単一の関数で @FunctionalInterface でインタフェースが修飾されています。</p>
-        <p>Lambda 式は (引数) -&gt; { 処理 } の形式で表します。引数は関数型インタフェースの実装すべきメソッドの引数を表し、処理はそのメソッドの実体を表しています。</p>
-        <p>そこで、まず匿名クラスを Lambda 式を書き換えてみてましょう。</p>
+        <p>Project Lambda の基本は Lambda 式です。</p>
+        <p>Java では関数型やクロージャは定義されていませんが、Lambda 式を使用することでオブジェクトをあたかも関数のように扱うことができます。</p>
+        <p>内部イテレータを実現する Stream API でも、イテレーションの処理は Lambda 式を用いて、関数のように記述します。</p>
+        <p>オブジェクトではなく関数として扱うということは、オブジェクトに対する意識も変化させなくてはなりません。</p>
+        <p>文法的には、Lambda 式は関数型インタフェースを実装した匿名クラスの簡易的な記述法とみなせます。関数型インタフェースは実装すべきメソッドが単一の関数で @FunctionalInterface でインタフェースが修飾されています。</p>
+        <p>しかし、Lambda 式を活用するには、匿名クラスとして考えるのではなく、関数として考えなくてはなりません。関数として考えることで関心の分離や、関数の合成などが実現できます。</p>
+        <p>本セクションでは、まず単純な例で匿名クラスを Lambda 式に変換することから始めます。次に、Java SE 8で追加された汎用の関数型インタフェースを使ってみます。そして、最後には Lambda 式を関数として扱う例について取りあげます。</p>
         <p>&nbsp;</p>
         <h4>2-1. Lambda 式で書き換えてみましょう</h4>
+        <p>Lambda 式は関数型インタフェースを実装した匿名クラスのように記述することができます。Lambda 式の構文は次のようになります。</p>
         <div>
-        <pre class="prettyprint">        Comparator&lt;Integer&gt; comparator1 = new Comparator&lt;Integer&gt;() {
+        <pre class="prettyprint">        (引数) -&gt; { 処理 }</pre>
+        </div>
+        <p>引数は関数型インタフェースの実装すべきメソッドの引数を表し、処理はそのメソッドの実体を表しています。</p>
+        <p>Java SE 7で提供されているインタフェースで関数型インタフェースとなる主なインタフェースを以下に示します。</p>
+        <ul>
+          <li>java.lang.Runnable</li>
+          <li>java.util.Callable</li>
+          <li>java.util.Comparator</li>
+        </ul>
+        <p>そこで、これらのインタフェースの匿名クラスを Lambda 式を書き換えてみてましょう。</p>
+        <p>まずは、Comparator インタフェースです。</p>
+        <p>以下のコードは整数のリストをソートするため、Comparator インタフェースの匿名クラスを使用しています。この匿名クラスを Lambda 式で書き直してみましょう。</p>
+        <p>&nbsp;</p>
+        <div>
+        <pre class="prettyprint">        // この匿名クラスを Lambda 式で書きかえ
+        Comparator&lt;Integer&gt; comparator = new Comparator&lt;Integer&gt;() {
             @Override
             public int compare(Integer x, Integer y) {
-                return x - y;
+                return Integer.compare(x, y);
             }
-        };</pre></div>
+        };
+        
+        List&lt;Integer&gt; numbers = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; 10; i++) {
+            numbers.add(i);
+        }
+        Random random = new Random();
+        for (int i = 0; i &lt; 10; i++) {
+            Integer number = numbers.remove(random.nextInt(10 - i));
+            numbers.add(number);
+        }
+
+        System.out.println("Before Sort: " + numbers);
+
+        // 整数のリストをソート
+        Collections.sort(numbers, comparator);
+
+        System.out.println("After Sort: " + numbers);</pre></div>
         <p>&nbsp;</p>
-        <h4>2-2. Lambda 式で書き換えてみましょう</h4>
+        <h4>2-2. Lambda 式で書きかえてみましょう</h4>
+        <p>次に Concurrency Utilities で使用される Callable インタフェースを Lambda 式にしてみましょう。</p>
+        <p>以下のコードは非同期にファイルを読み込むためのコードです。Callable インタフェースの匿名クラスではファイルを読み込む処理を行っています。これを Lambda 式に書きかえてみましょう。</p>
+        <p>&nbsp;</p>
         <div>
-        <pre class="prettyprint">        Callable&lt;Date&gt; callable1 = new Callable&lt;Date&gt;() {
+        <pre class="prettyprint">        // この匿名クラスを Lambda 式で書きかえ
+        Callable&lt;List&lt;String&gt;&gt; callable = new Callable&lt;List&lt;String&gt;&gt;() {
             @Override
-            public Date call() throws Exception {
-                return new Date();
+            public List&lt;String&gt; call() throws Exception {
+                // ファイル読み込み処理
+                Path path = Paths.get("src/questions/LambdaInsteadOfAnonClass.java");
+                return Files.readAllLines(path);
             }
-        };</pre></div>
+        };
+        
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+
+        // 非同期にファイルを読み込み
+        Future&lt;List&lt;String&gt;&gt; future = executor.submit(callable);
+        try {
+            System.out.println(future.get());
+        } catch (InterruptedException | ExecutionException ex) {
+            // 例外処理
+        } finally {
+            executor.shutdown();
+        }</pre></div>
         <p>&nbsp;</p>
         <h4>2-3. Lambda 式で書き換えてみましょう</h4>
+        <p>既存の関数型インタフェースの最後は Runnable インタフェースです。Runnable インタフェースも非同期処理に使用されますが、戻り値はありません。</p>
+        <p>ここでは、1 秒ごとに時間を表示するタスクを Runnable インタフェースで記述してみました。これを Lambda 式で書きかえてみましょう。</p>
         <div>
-        <pre class="prettyprint">        Runnable runnable1 = new Runnable() {
+        <pre class="prettyprint">        // 1秒ごとに時間を表示するタスク
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                doSomething();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                for(;;) {
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                        System.out.println(LocalTime.now().format(formatter));
+                    } catch (InterruptedException ex) {
+                        return;
+                    }
+                }
             }
-        };</pre></div>
+        };
+        
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+
+        // 1分間だけ、タスクを実行する
+        executor.submit(runnable);
+        try {
+            TimeUnit.MINUTES.sleep(1);
+        } catch (InterruptedException ex) {
+        } finally {        
+            executor.shutdownNow();
+        }</pre></div>
         <p>&nbsp;</p>
         <h4>2-4. Lambda 式で書き換えてみましょう</h4>
         <div>

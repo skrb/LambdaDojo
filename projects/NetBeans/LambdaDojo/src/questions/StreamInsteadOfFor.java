@@ -17,11 +17,11 @@ public class StreamInsteadOfFor {
 
     public StreamInsteadOfFor() {
         simpleStream1();
-//        simpleStream2();
-//        processStatistics();
-//        splitSentences();
-//        fileRead("src/StreamInsteadOfFor.java");
-//        wordCount();
+        simpleStream2();
+        processStatistics();
+        splitSentences();
+        fileRead("src/StreamInsteadOfFor.java");
+        wordCount();
     }
 
     private void simpleStream1() {
@@ -32,13 +32,7 @@ public class StreamInsteadOfFor {
             }
         }
         System.out.println();
-
-        numbers.stream()
-                .filter(x -> x % 2 == 0)
-                .forEach(System.out::print);
-        System.out.println();
     }
-        double ave2 = 0.0;
 
     private void simpleStream2() {
         List<Integer> numbers = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
@@ -48,23 +42,6 @@ public class StreamInsteadOfFor {
             ave += x;
         }
         System.out.println(ave / numbers.size());
-
-        numbers.forEach(x -> ave2 += x);
-        System.out.println(ave / numbers.size());
-
-        int ave3 = numbers.stream()
-                          .reduce(0, (x, y) -> x+y);
-        System.out.println(ave3 / numbers.size());
-
-        int ave4 = numbers.stream()
-                          .mapToInt(x -> x)
-                          .reduce(0, (x, y) -> x+y);
-        System.out.println(ave4 / numbers.size());
-
-        int ave5 = numbers.stream()
-                          .mapToInt(x -> x)
-                          .sum();
-        System.out.println(ave5 / numbers.size());
     }
 
     private void processStatistics() {
@@ -74,27 +51,6 @@ public class StreamInsteadOfFor {
         for (int i = 0; i < 100; i++) {
             numbers.add(random.nextDouble());
         }
-
-        List<Double> numbers2 = new ArrayList<>();
-        IntStream.range(0, 100)
-                .forEach(i -> numbers.add(random.nextDouble()));
-
-        List<Double> numbers3 = 
-            IntStream.range(0, 100)
-                    .mapToObj(i -> random.nextDouble())
-                    .collect(Collectors.toList());
-
-        List<Double> numbers4 = 
-            IntStream.range(0, 100)
-                    .mapToDouble(i -> random.nextDouble())
-                    .boxed()
-                    .collect(Collectors.toList());
-
-        List<Double> numbers5 = 
-            DoubleStream.generate(() -> random.nextDouble())
-                    .limit(100)
-                    .boxed()
-                    .collect(Collectors.toList());
         
         // 平均を算出
         double ave = 0.0;
@@ -172,19 +128,6 @@ public class StreamInsteadOfFor {
                 result.put(lowerWord, count+1);
             }
         }
-        
-        Map<String, List<String>> result2
-                = sentences.stream()
-                           .flatMap(s -> Arrays.stream(s.split(" ")))
-                           .map(w -> w.toLowerCase())
-                           .collect(Collectors.groupingBy(w -> w));
-
-        Map<String, Long> result3
-                = sentences.stream()
-                           .flatMap(s -> Arrays.stream(s.split(" ")))
-                           .map(w -> w.toLowerCase())
-                           .collect(Collectors.groupingBy(w -> w,
-                                   Collectors.counting()));
     }
 
     public static void main(String[] args) {
