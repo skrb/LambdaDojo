@@ -163,21 +163,36 @@
         }</pre></div>
         <p>&nbsp;</p>
         <h4>2-4. Lambda 式で書き換えてみましょう</h4>
+        <p>次に Java SE 8 で導入された、汎用の関数型インタフェースの匿名クラスを Lambda 式で書きかえてみましょう。</p>
+        <p>汎用の関数型インタフェースは java.util.function パッケージで提供されており、すべて合わせると 43 インタフェースにもなります。</p>
+        <p>しかし、基本となるのは以下の 4 種類のインタフェースです。</p>
+        <ul>
+          <li><strong>Function</strong> 引数あり、返り値あり</li>
+          <li><strong>Consumer</strong> 引数あり、返り値なし</li>
+          <li><strong>Predicate</strong> 引数なり、返り値の型は boolean 型</li>
+          <li><strong>Supplier</strong> 引数なし、返り値あり</li>
+        </ul>
+        <p>これらのインタフェースの引数の個数が違うインタフェース、プリミティブに対応したインタフェースなどが追加されていますが、基本的な動作はこの 4 種類です。</p>
+        <p>Function インタフェースは、その名の通り一般的な関数を表します。Consumer インタフェースは for 文/拡張 for 文の書きかえに使われることが多いインタフェースです。</p>
+        <p>Predicate インタフェースは戻り値が boolean であることから、フィルタリングなど条件に合致しているかどうかを調べるために使用されます。最後の Supplier インタフェースはオブジェクトのファクトリとして使用されます。</p>
+        <p>ここでは、Function インタフェースを使用して単語の平均長を求める処理を記述しています。これを Lambda 式で書きかえてみましょう。</p>
         <div>
-          <pre class="prettyprint">    @FunctionalInterface
-    public interface Doubler&lt;T extends Number&gt; {
-        T doDouble(T x);
-    }
- 
-    ...
- 
-        Doubler<Double> doubler = new Doubler<Double>() {
+          <pre class="prettyprint">        Function&lt;String, Integer&gt; function = new Function&lt;String, Integer&gt;() {
             @Override
-            public Double doDouble(Double x) {
-                return 2.0 * x;
+            public Integer apply(String word) {
+                return word.length();
             }
-        };</pre>
+        };
+        
+        List<String> words = Arrays.asList("one thing was certain that the white kitten had had nothing to do with it".split(" "));
+        double average = 0.0;
+        for (String word: words) {
+            average += function.apply(word);
+        }
+        average /= words.size();
+        System.out.println("Average: " + average);</pre>
         </div>
+        <p>ここでは、拡張 for 文を使用して単語長を合計していますが、このような処理はゆくゆくは Stream API に置き換えなくてはいくべくです。これについては、4 章で取りあげます。</p>
         <p>&nbsp;</p>
         <h4>2-5. Lambda 式で書き換えてみましょう</h4>
         <p>次のプログラムは JavaFX のプログラムです。ボタンをクリックするとカウンタが増加するというだけの単純なプログラムですが、ここで使われている匿名クラスを Lambda 式で書き換えてみましょう。</p>
