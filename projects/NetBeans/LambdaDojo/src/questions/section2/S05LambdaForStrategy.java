@@ -16,7 +16,7 @@ public class S05LambdaForStrategy {
             this.value = value;
         }
 
-        public void print(Consumer<T> saver) {
+        public void output(Consumer<T> saver) {
             saver.accept(value);
         }
     }
@@ -28,7 +28,7 @@ public class S05LambdaForStrategy {
     private void useContainer() {
         Container<String> container = new Container<>("Hello, World!");
         
-        container.print(new Consumer<String>() {
+        container.output(new Consumer<String>() {
             @Override
             public void accept(String value) {
                 System.out.println(value);
@@ -36,7 +36,7 @@ public class S05LambdaForStrategy {
         });
         
         final String filename = "container.txt";
-        container.print(new Consumer<String>() {
+        container.output(new Consumer<String>() {
             @Override
             public void accept(String value) {
                 try {
