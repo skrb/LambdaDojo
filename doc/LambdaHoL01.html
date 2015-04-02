@@ -62,7 +62,7 @@
         <p>しかし、Lambda 式を活用するには、匿名クラスとして考えるのではなく、関数として考えなくてはなりません。関数として考えることで関心の分離や、関数の合成などが実現できます。</p>
         <p>本セクションでは、まず単純な例で匿名クラスを Lambda 式に変換することから始めます。次に、Java SE 8で追加された汎用の関数型インタフェースを使ってみます。そして、最後には Lambda 式を関数として扱う例について取りあげます。</p>
         <p>&nbsp;</p>
-        <h4>2-1. Lambda 式で書き換えてみましょう</h4>
+        <h4>2-1. 匿名クラスを Lambda 式で書き換えてみましょう</h4>
         <p>Lambda 式は関数型インタフェースを実装した匿名クラスのように記述することができます。Lambda 式の構文は次のようになります。</p>
         <div>
         <pre class="prettyprint">        (引数) -&gt; { 処理 }</pre>
@@ -104,7 +104,7 @@
 
         System.out.println("After Sort: " + numbers);</pre></div>
         <p>&nbsp;</p>
-        <h4>2-2. Lambda 式で書きかえてみましょう</h4>
+        <h4>2-2. 匿名クラスを Lambda 式で書きかえてみましょう</h4>
         <p>次に Concurrency Utilities で使用される Callable インタフェースを Lambda 式にしてみましょう。</p>
         <p>以下のコードは非同期にファイルを読み込むためのコードです。Callable インタフェースの匿名クラスではファイルを読み込む処理を行っています。これを Lambda 式に書きかえてみましょう。</p>
         <p>&nbsp;</p>
@@ -131,7 +131,7 @@
             executor.shutdown();
         }</pre></div>
         <p>&nbsp;</p>
-        <h4>2-3. Lambda 式で書き換えてみましょう</h4>
+        <h4>2-3. 匿名クラスを Lambda 式で書き換えてみましょう</h4>
         <p>既存の関数型インタフェースの最後は Runnable インタフェースです。Runnable インタフェースも非同期処理に使用されますが、戻り値はありません。</p>
         <p>ここでは、1 秒ごとに時間を表示するタスクを Runnable インタフェースで記述してみました。これを Lambda 式で書きかえてみましょう。</p>
         <div>
@@ -162,7 +162,7 @@
             executor.shutdownNow();
         }</pre></div>
         <p>&nbsp;</p>
-        <h4>2-4. Lambda 式で書き換えてみましょう</h4>
+        <h4>2-4. 汎用の関数型インタフェースを使ってみましょう</h4>
         <p>次に Java SE 8 で導入された、汎用の関数型インタフェースの匿名クラスを Lambda 式で書きかえてみましょう。</p>
         <p>汎用の関数型インタフェースは java.util.function パッケージで提供されており、すべて合わせると 43 インタフェースにもなります。</p>
         <p>しかし、基本となるのは以下の 4 種類のインタフェースです。</p>
@@ -195,7 +195,7 @@
         </div>
         <p>ここでは、拡張 for 文を使用して単語長を合計していますが、このような処理はゆくゆくは Stream API に置き換えなくてはいくべくです。これについては、4 章で取りあげます。</p>
         <p>&nbsp;</p>
-        <h4>2-5. Lambda 式で書き換えてみましょう</h4>
+        <h4>2-5. 高階関数を使ってみましょう</h4>
         <p>今までの Lambda 式の使い方を見てきて、気づいたことはありませんか。</p>
         <p>それは、Lambda 式をメソッドの引数に使用している場合が多いということです。</p>
         <p>Lambda 式を匿名クラスの置き換えととらえてしまうと、単にメソッドの引数にオブジェクトを渡しているだけのように思えるかもしれません。しかし、Lambda 式を関数のように扱うことで、ちょっと見方が変わってきます。</p>
@@ -248,8 +248,69 @@
         <p>上のコードでは output メソッドに渡すのは匿名クラスのオブジェクトです。これを Lambda 式で書きかえてみましょう。</p>
         <p>Lambda 式を使用することで、どのような処理をおこなうのか分かりやすくなるはずです。</p>
         <p>もし、自作のライブラリで Lambda 式を活用していきたいと考えるのであれば、高階関数を使用してみるのがいいのではないでしょうか。</p>
-        <p></p>
-        <p></p>
+        <p>&nbsp;</p>
+        <h4>2-6. 関数合成をしてみましょう</h4>
+        <p>関数を使うことの利点の 1 つに、単純な処理を組み合わせて複雑な処理を組み立てられることがあります。</p>
+        <p>たとえば、次に示す Person クラスのコレクションをソートすることを考えてみましょう。</p>
+        <div>
+          <pre class="prettyprint">    class Person {
+
+        private String first;
+        private String last;
+
+        public Person(String first, String last) {
+            this.first = first;
+            this.last = last;
+        }
+
+        public String getFirst() {
+            return first;
+        }
+
+        public String getLast() {
+            return last;
+        }
+    }</pre>
+        </div>
+        <p>人名でソートするには、まずラストネームでソートを行います。ラストネームが同一であれば、ファーストネームで比較します。これを行うコンパレータを何も考えずに記述すると次のようになります。</p>
+        <div>
+          <pre class="prettyprint">    private void sortPerson() {
+        List&lt;Person&gt; persons = Arrays.asList(
+                new Person("James", "Brown"),
+                new Person("David", "Crosby"),
+                new Person("James", "Taylor"),
+                new Person("Jackson", "Brown"),
+                new Person("Neil", "Young"),
+                new Person("Coco", "Taylor")
+        );
+
+        Comparator&lt;Person&gt; comparator = new Comparator&lt;Person&gt;() {
+            @Override
+            public int compare(Person p1, Person p2) {
+                // 姓で比較
+                String last1 = p1.getLast();
+                String last2 = p2.getLast();
+                int result = last1.compareTo(last2);
+
+                if (result != 0) {
+                    return result;
+                } else {
+                    // 姓が同じ場合、名で比較
+                    String first1 = p1.getFirst();
+                    String first2 = p2.getFirst();
+                    return first1.compareTo(first2);
+                }
+            }
+        };
+
+        Collections.sort(persons, comparator);
+        System.out.println(persons);
+    }</pre>
+        </div>
+        <p>このコンパレータはそれほど複雑な処理ではありませんが、if 文が含まれていたりとちょっとイヤな感じです。</p>
+        <p>そこで、ファーストネームで比較するコンパレータの Lambda 式と、ラストネームで比較するコンパレータの Lambda 式を組み合わせて、同じ処理を行えるようにしてみましょう。</p>
+        <p>ちょっと難しいですか? Comparator の Javadoc をよく見てみると、使えそうなメソッドがあるはずですよ。</p>
+        <p>&nbsp;</p>
         <div><a name="sec3" id="sec3" ></a>
         </div>
         <p>&nbsp;</p>
