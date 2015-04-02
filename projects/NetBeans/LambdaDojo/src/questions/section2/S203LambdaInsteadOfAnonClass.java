@@ -6,9 +6,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class S03LambdaInsteadOfAnonClass {
+public class S203LambdaInsteadOfAnonClass {
 
-    public S03LambdaInsteadOfAnonClass() {
+    public S203LambdaInsteadOfAnonClass() {
         rewriteByLambda();
     }
 
@@ -43,6 +43,6 @@ public class S03LambdaInsteadOfAnonClass {
     }
 
     public static void main(String... args) {
-        new S03LambdaInsteadOfAnonClass();
+        new S203LambdaInsteadOfAnonClass();
     }
 }

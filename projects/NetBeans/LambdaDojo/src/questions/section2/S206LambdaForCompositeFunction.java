@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class S06LambdaForCompositeFunction {
+public class S206LambdaForCompositeFunction {
 
     static class Person {
 
@@ -31,7 +31,7 @@ public class S06LambdaForCompositeFunction {
         }
     }
 
-    public S06LambdaForCompositeFunction() {
+    public S206LambdaForCompositeFunction() {
         sortPerson();
     }
 
@@ -69,6 +69,6 @@ public class S06LambdaForCompositeFunction {
     }
 
     public static void main(String... args) {
-        new S06LambdaForCompositeFunction();
+        new S206LambdaForCompositeFunction();
     }
 }

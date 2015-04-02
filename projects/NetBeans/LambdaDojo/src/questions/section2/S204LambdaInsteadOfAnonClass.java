@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-public class S04LambdaInsteadOfAnonClass {
+public class S204LambdaInsteadOfAnonClass {
 
-    public S04LambdaInsteadOfAnonClass() {
+    public S204LambdaInsteadOfAnonClass() {
         rewriteByLambda();
     }
 
@@ -29,6 +29,6 @@ public class S04LambdaInsteadOfAnonClass {
     }
 
     public static void main(String... args) {
-        new S04LambdaInsteadOfAnonClass();
+        new S204LambdaInsteadOfAnonClass();
     }
 }

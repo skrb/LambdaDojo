@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Consumer;
 
-public class S05LambdaForStrategy {
+public class S205LambdaForStrategy {
 
     static class Container<T> {
 
@@ -21,7 +21,7 @@ public class S05LambdaForStrategy {
         }
     }
     
-    public S05LambdaForStrategy() {
+    public S205LambdaForStrategy() {
         useContainer();
     }
     
@@ -51,6 +51,6 @@ public class S05LambdaForStrategy {
     }
 
     public static void main(String... args) {
-        new S05LambdaForStrategy();
+        new S205LambdaForStrategy();
     }
 }

@@ -6,9 +6,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-public class S01LambdaInsteadOfAnonClass {
+public class S201LambdaInsteadOfAnonClass {
 
-    public S01LambdaInsteadOfAnonClass() {
+    public S201LambdaInsteadOfAnonClass() {
         rewriteByLambda();
     }
 
@@ -40,6 +40,6 @@ public class S01LambdaInsteadOfAnonClass {
     }
 
     public static void main(String... args) {
-        new S01LambdaInsteadOfAnonClass();
+        new S201LambdaInsteadOfAnonClass();
     }
 }

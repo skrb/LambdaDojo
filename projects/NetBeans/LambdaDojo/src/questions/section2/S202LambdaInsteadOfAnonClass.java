@@ -10,9 +10,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class S02LambdaInsteadOfAnonClass {
+public class S202LambdaInsteadOfAnonClass {
 
-    public S02LambdaInsteadOfAnonClass() {
+    public S202LambdaInsteadOfAnonClass() {
         rewriteByLambda();
     }
 
@@ -43,6 +43,6 @@ public class S02LambdaInsteadOfAnonClass {
     }
 
     public static void main(String... args) {
-        new S02LambdaInsteadOfAnonClass();
+        new S202LambdaInsteadOfAnonClass();
     }
 }
