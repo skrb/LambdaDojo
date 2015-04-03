@@ -466,13 +466,13 @@
         <h4>4-4. Stream で書き換えてみましょう</h4>
         <p>文字列を要素に持つリストを、個々の単語に分割して、新たにリストに保持させます。</p>
         <p>１つの要素を分割して、それをまとめるメソッドがありましたよね。</p>
-        <p></p>
+        <p>&nbsp;</p>
         <div>
           <pre class="prettyprint">        List&lt;String&gt; sentences = ...;
         
-        List&lt;String&gt; words = new ArrayList&lt;&gt;();
+        Set&lt;String&gt; words = new HashSet&lt;&gt;();
         for (String sentence: sentences) {
-            String[] splitedSentence  = sentence.split(" ");
+            String[] splitedSentence  = sentence.split("[\\.,\\? ]");
             for (String word: splitedSentence) {
                 words.add(word);
             }
@@ -492,7 +492,7 @@
                     break;
                 }
                 
-                String[] words = line.split(" ");
+                String[] words = line.split("[\\.,\\?; ]");
                 wordCount += words.length;
             }
             System.out.println(wordCount);
@@ -509,7 +509,7 @@
         Map&lt;String, Integer&gt; result = new HashMap&lt;&gt;();
         
         for (String sentence: sentences) {
-            String[] splitedSentence  = sentence.split(" ");
+            String[] splitedSentence  = sentence.split("[\\.,\\? ]");
             
             for (String word: splitedSentence) {
                 String lowerWord = word.toLowerCase();
@@ -521,7 +521,7 @@
         <p>途中までは単語の切り出しと同じですね。単語を切り出した後に、どうやって集計をするかが肝になります。</p>
         <p>&nbsp;</p>
         <p>いかがでしたでしょうか。</p>
-        <p>ちなみに、個々の問題は正解が 1 つとは限りません。いろいろな書き方があり、それに応じて使用するメソッドも変化します。いろいろな書き方をできるようにしておくと、応用範囲が広がると思います。</p>
+        <p>ちなみに、個々の問題は正解が 1 つとは限りません。いろいろな書き方があり、それに応じて使用するメソッドも変化します。いろいろな書き方をできるようにしておくと、応用範囲が広がるはずです。</p>
         <p>&nbsp;</p>
       </div>
     </div>
