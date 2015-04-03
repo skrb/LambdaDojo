@@ -1,4 +1,4 @@
-package questions;
+package questions.section4;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,13 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
 
-public class StreamInsteadOfFor {
+public class S505StreamInsteadOfFor {
 
-    public StreamInsteadOfFor() {
+    public S505StreamInsteadOfFor() {
         simpleStream1();
         simpleStream2();
         processStatistics();
@@ -131,6 +128,6 @@ public class StreamInsteadOfFor {
     }
 
     public static void main(String[] args) {
-        new StreamInsteadOfFor();
+        new S505StreamInsteadOfFor();
     }
 }
