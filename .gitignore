@@ -4,8 +4,4 @@
 /projects/NetBeans/LambdaDojo/dist/
 
 # for IntelliJ IDEA
-/projects/IntelliJ/LambdaDojo/.idea/
 /projects/IntelliJ/LambdaDojo/out/
-*.iml
-*.ipr
-*.iws
