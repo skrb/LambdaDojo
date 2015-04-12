@@ -24,7 +24,7 @@ public class S202LambdaInsteadOfAnonClass {
             @Override
             public List<String> call() throws Exception {
                 // ファイル読み込み処理
-                Path path = Paths.get("src/questions/section2/S02LambdaInsteadOfAnonClass.java");
+                Path path = Paths.get("src/questions/section2/S202LambdaInsteadOfAnonClass.java");
                 return Files.readAllLines(path);
             }
         };
