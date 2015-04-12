@@ -1,18 +1,13 @@
 package questions.section4;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
-public class S506StreamInsteadOfFor {
+public class S406StreamInsteadOfFor {
 
-    public S506StreamInsteadOfFor() {
+    public S406StreamInsteadOfFor() {
         wordCount();
     }
 
@@ -42,6 +37,6 @@ public class S506StreamInsteadOfFor {
     }
 
     public static void main(String[] args) {
-        new S506StreamInsteadOfFor();
+        new S406StreamInsteadOfFor();
     }
 }

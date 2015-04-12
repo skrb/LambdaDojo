@@ -3,9 +3,9 @@ package questions.section4;
 import java.util.Arrays;
 import java.util.List;
 
-public class S502StreamInsteadOfFor {
+public class S402StreamInsteadOfFor {
 
-    public S502StreamInsteadOfFor() {
+    public S402StreamInsteadOfFor() {
         sum();
     }
 
@@ -20,6 +20,6 @@ public class S502StreamInsteadOfFor {
     }
 
     public static void main(String[] args) {
-        new S502StreamInsteadOfFor();
+        new S402StreamInsteadOfFor();
     }
 }

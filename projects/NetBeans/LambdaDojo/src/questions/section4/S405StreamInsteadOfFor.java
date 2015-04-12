@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class S505StreamInsteadOfFor {
+public class S405StreamInsteadOfFor {
 
-    public S505StreamInsteadOfFor() {
-        fileRead("src/questions/section4/S505StreamInsteadOfFor.java");
+    public S405StreamInsteadOfFor() {
+        fileRead("src/questions/section4/S405StreamInsteadOfFor.java");
     }
 
     private void fileRead(String filename) {
@@ -30,6 +30,6 @@ public class S505StreamInsteadOfFor {
     }
 
     public static void main(String[] args) {
-        new S505StreamInsteadOfFor();
+        new S405StreamInsteadOfFor();
     }
 }

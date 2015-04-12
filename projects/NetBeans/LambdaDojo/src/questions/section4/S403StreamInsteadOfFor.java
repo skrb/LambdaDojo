@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class S503StreamInsteadOfFor {
+public class S403StreamInsteadOfFor {
 
-    public S503StreamInsteadOfFor() {
+    public S403StreamInsteadOfFor() {
         processStatistics();
     }
 
@@ -37,6 +37,6 @@ public class S503StreamInsteadOfFor {
     }
 
     public static void main(String[] args) {
-        new S503StreamInsteadOfFor();
+        new S403StreamInsteadOfFor();
     }
 }

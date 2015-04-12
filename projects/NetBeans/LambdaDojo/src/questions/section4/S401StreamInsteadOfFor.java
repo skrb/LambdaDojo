@@ -3,9 +3,9 @@ package questions.section4;
 import java.util.Arrays;
 import java.util.List;
 
-public class S501StreamInsteadOfFor {
+public class S401StreamInsteadOfFor {
 
-    public S501StreamInsteadOfFor() {
+    public S401StreamInsteadOfFor() {
         filterEven();
     }
 
@@ -20,6 +20,6 @@ public class S501StreamInsteadOfFor {
     }
 
     public static void main(String[] args) {
-        new S501StreamInsteadOfFor();
+        new S401StreamInsteadOfFor();
     }
 }

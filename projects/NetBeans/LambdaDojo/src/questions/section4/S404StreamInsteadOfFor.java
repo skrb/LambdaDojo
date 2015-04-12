@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class S504StreamInsteadOfFor {
+public class S404StreamInsteadOfFor {
 
-    public S504StreamInsteadOfFor() {
+    public S404StreamInsteadOfFor() {
         splitSentences();
     }
 
@@ -35,6 +35,6 @@ public class S504StreamInsteadOfFor {
     }
 
     public static void main(String[] args) {
-        new S504StreamInsteadOfFor();
+        new S404StreamInsteadOfFor();
     }
 }
